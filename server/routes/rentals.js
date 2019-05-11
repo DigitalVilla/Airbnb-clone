@@ -1,21 +1,13 @@
 const router = require('express').Router();
+const db = require('../controllers/dbOps');
+const mod = require('../models/Rental');
 
+// @route   GET api/rentals/
+// @desc    Return all rental listings
+router.get('/', (rq, rs) => db.getAll(rq, rs, mod));
 
-
-// Load models
-const Rental = require('../models/rental');
-
-
-// @route   GET api/rentals/test
-// @desc    Get all rental listings
-// @access  Public
-router.get('/', (req, res) => {
-  Rental.find()
-    .then(posts => res.json(posts))
-    .catch(err => res.status(404).json({
-      noposts: 'No posts found'
-    }));
-});
-
+// @route   GET api/rentals/:id
+// @desc    Return a rental listing by id
+router.get('/:id', (rq, rs) => db.getById(rq, rs, mod));
 
 module.exports = router;
