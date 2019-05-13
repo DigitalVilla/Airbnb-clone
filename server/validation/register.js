@@ -1,5 +1,5 @@
 const Validator = require('validator');
-const isEmpty = require('./is-empty');
+const u = require('./utils');
 
 /**
  * This method validates the common registry process,
@@ -8,51 +8,43 @@ const isEmpty = require('./is-empty');
 module.exports = (data, update) => {
   let errors = {};
 
-  if (!data || isEmpty(data)) {
-    errors.object = 'Object is empty';
-    return {
-      errors,
-      isValid: false
-    }
-  }
-
   //FALLBACK EMPTY FIELDS
-  data.email = !isEmpty(data.email) ? data.email : '';
-  data.username = !isEmpty(data.username) ? data.username : '';
-  data.password = !isEmpty(data.password) ? data.password : '';
-  data.password2 = !isEmpty(data.password2) ? data.password2 : '';
+  const email = !u.isEmpty(data.email) ? data.email : '';
+  const username = !u.isEmpty(data.username) ? data.username : '';
+  const password = !u.isEmpty(data.password) ? data.password : '';
+  const password2 = !u.isEmpty(data.password2) ? data.password2 : '';
 
-  if (data.email && !Validator.isEmail(data.email))
+  if (email && !Validator.isEmail(email))
     errors.email = 'Enter a valid email';
 
-  if (data.email && !Validator.isLength(data.email, { min: 1, max: 60 }))
+  if (email && !Validator.isLength(email, { min: 1, max: 60 }))
     errors.email = 'Email must be less than 60 characters';
 
-  if (data.username && !Validator.isLength(data.username, { min: 4, max: 20 }))
+  if (username && !Validator.isLength(username, { min: 4, max: 20 }))
     errors.username = 'Username must be between 4 and 20 characters';
 
-  if (data.password && !Validator.isLength(data.password, { min: 6, max: 32 }))
+  if (password && !Validator.isLength(password, { min: 6, max: 32 }))
     errors.password = 'Password must be between 6 and 32 characters';
 
   if (!update) { //skip validation
-    if (Validator.isEmpty(data.username))
+    if (!username)
       errors.username = 'Enter a unique username';
 
-    if (Validator.isEmpty(data.email))
+    if (!email)
       errors.email = 'Enter a valid email';
 
-    if (Validator.isEmpty(data.password))
+    if (!password)
       errors.password = 'Enter a strong password';
 
-    if (Validator.isEmpty(data.password2))
-      errors.password2 = 'Both passwords must match';
+    if (!password2)
+      errors.password2 = 'Retype your password';
 
-    if (!Validator.equals(data.password, data.password2))
+    if (password !== password2)
       errors.password2 = 'Both passwords must match';
   }
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: u.isEmpty(errors)
   };
 };
