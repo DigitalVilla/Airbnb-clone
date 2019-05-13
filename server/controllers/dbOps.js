@@ -1,11 +1,23 @@
-const u = require('../validation/utils');
+const utils = require('../utils');
 const dbOps = {};
 
-// GET METHODS
-dbOps.getAll = (req, res, model) => model.find()
-  .then(a => res.json(a))
-  .catch(err => res.status(404).json({ err }));
+/**
+ * Authorize the header token.
+ * @param req The http request.
+ * @param res The http response.
+ * @param User The user model.
+ */
+dbOps.getAll = (req, res, model) =>
+  model.find()
+    .then(a => res.json(a))
+    .catch(err => res.status(400).send(utils.toolBox.parsErr(err)))
 
+/**
+ * Authorize the header token.
+ * @param req The http request.
+ * @param res The http response.
+ * @param User The user model.
+ */
 dbOps.getById = (req, res, model) =>
   model.findById(req.params.id)
     .then(a => res.json(a))
@@ -13,19 +25,34 @@ dbOps.getById = (req, res, model) =>
       error: `${model.modelName}'s id not found `
     }));
 
+/**
+ * Authorize the header token.
+ * @param req The http request.
+ * @param res The http response.
+ * @param User The user model.
+ */
 dbOps.getBy = (req, res, model) => {
   model.findOne({ [req.params.key]: req.body[req.params.key] })
     .then(el => {
-      if (!el) // user not found
-        return res.status(404).json({
-          error: `${[req.params.key]} : ${req.body[req.params.key]}`
+        console.log(el);
+      if (!el) return res.status(404).json({
+          notFound: `${[req.params.key]} : ${req.body[req.params.key]}`
         });
-      res.json(u.filtered(el, (key) => { //sanitize data
-        if (key !== "password" && key !== '__v' && key !== 'rentals')
-          return key
-      }))
+      res.json(utils.toolBox.filtered(el._doc, ['password', '__v', 'createdAt', '_id'], false))
     })
-    .catch(err => res.status(404).json({ err }));
+    .catch(err => res.status(400).send(utils.toolBox.parsErr(err)))
+}
+/**
+ * Authorize the header token.
+ * @param req The http request.
+ * @param res The http response.
+ * @param User The user model.
+ */
+dbOps.createNew = (req, res, model) => {
+  const newObj = new model(req.body);
+  newObj.save().then(
+    res.json({ ok: true })
+  )
 }
 
 module.exports = dbOps;

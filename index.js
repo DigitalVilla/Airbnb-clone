@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 
 //DB connection
-const db = require('./server/config/keys').database;
+const db = require('./server/config/keys').DATABASE;
 mongoose.connect(db, {
     useCreateIndex: true,
     useNewUrlParser: true
@@ -18,10 +18,12 @@ mongoose.connect(db, {
 mongoose.set('useFindAndModify', false)
 
 //Routes
+const bookings = require('./server/routes/bookings');
 const rentals = require('./server/routes/rentals');
 const users = require('./server/routes/users');
 
 // Use Routes
+app.use('/api/bookings', bookings);
 app.use('/api/rentals', rentals);
 app.use('/api/users', users);
 

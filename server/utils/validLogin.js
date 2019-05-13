@@ -1,12 +1,13 @@
 const Validator = require('validator');
-const u = require('./utils');
+const util = require('./toolBox');
 
-module.exports = function validateLoginInput(data) {
+module.exports = function (req, res, next) {
+  const data = req.body;
   let errors = {};
 
   //FALLBACK EMPTY FIELDS
-  const email = !u.isEmpty(data.email) ? data.email : '';
-  const password = !u.isEmpty(data.password) ? data.password : '';
+  const email = !util.isEmpty(data.email) ? data.email : '';
+  const password = !util.isEmpty(data.password) ? data.password : '';
 
   if (email && !Validator.isEmail(email))
     errors.email = 'Enter a valid email to log in';
@@ -17,8 +18,8 @@ module.exports = function validateLoginInput(data) {
   if (!password)
     errors.password = 'Enter your account\'s password to log in';
 
-  return {
-    errors,
-    isValid: u.isEmpty(errors)
-  };
+  if (!util.isEmpty(errors))
+    return res.status(422).json(errors);
+
+  next(data);
 };
