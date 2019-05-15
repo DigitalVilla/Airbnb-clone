@@ -9,13 +9,15 @@ exports.parseToken = (req, res, next) => {
   jwt.verify(token.split(' ')[1], keys.SECRET, (err, decoded) => {
     if (err)
       return res.status(401).json('Unauthorized user');
-    next(decoded)
+      //add token to req.user
+      req.user = decoded
+    next()
   })
 }
 
 // Create JWT token w/ payload
 exports.newToken = (res, payload) => {
   jwt.sign(payload, keys.SECRET, {
-      expiresIn: 3600 * 3 //3hrs
+      expiresIn: 3600 * 1000 //3hrs
     }, (err, token) => res.json({ token: 'Bearer ' + token }));
 }

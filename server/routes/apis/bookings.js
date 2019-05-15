@@ -1,7 +1,8 @@
 const router = require('express').Router();
-const db = require('../controllers/dbOps');
-const mod = require('../models/Booking');
-const user = require('../controllers/userOps');
+const db = require('../../controllers/dbOps');
+const mod = require('../../models/Booking');
+const user = require('../../controllers/userOps');
+const book = require('../../controllers/bookingOps');
 
 // @route   GET api/bookings/
 // @desc    Return all rental listings
@@ -17,7 +18,7 @@ router.get('/by/:key', user.auth,  (rq, rs) => db.getBy(rq, rs, mod));
 
 // @route   GET api/bookings/:paramaeter
 // @desc    Return all rental that match x parameter
-router.post('/new/', user.auth,  (rq, rs) => db.createNew(rq, rs, mod));
+router.post('/new/', user.auth,  (rq, rs) => book.newBooking(rq, rs, mod));
 
 
 

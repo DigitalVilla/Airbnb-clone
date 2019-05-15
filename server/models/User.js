@@ -16,7 +16,7 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: [true, 'Enter a unique password']
+    required: [true, 'Enter a strong password']
   },
   rentals: [{
     type: Schema.Types.ObjectId,

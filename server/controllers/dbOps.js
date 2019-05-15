@@ -34,7 +34,6 @@ dbOps.getById = (req, res, model) =>
 dbOps.getBy = (req, res, model) => {
   model.findOne({ [req.params.key]: req.body[req.params.key] })
     .then(el => {
-        console.log(el);
       if (!el) return res.status(404).json({
           notFound: `${[req.params.key]} : ${req.body[req.params.key]}`
         });

@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const db = require('../controllers/dbOps');
-const mod = require('../models/Rental');
+const db = require('../../controllers/dbOps');
+const mod = require('../../models/Rental');
 
 // @route   GET api/rentals/
 // @desc    Return all rental listings

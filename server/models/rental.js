@@ -4,8 +4,7 @@ const Schema = mongoose.Schema;
 const rentalSchema = new Schema({
   title: {
     type: String,
-    required: 'Please enter the title',
-    max: [80, 'Title length must be within 80 characters']
+    required: 'Please enter the title'
   },
   address: {
     type: String,

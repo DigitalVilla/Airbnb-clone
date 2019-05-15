@@ -9,6 +9,42 @@ exports.isEmpty = object =>
   (typeof object === 'object' && Object.keys(object).length === 0) ||
   (typeof object === 'string' && object.trim().length === 0);
 
+/**
+ * Return today's absoulute date (no hrs).
+ * @param formated If true date is formated to "MM/DD/YYYY" else .
+ * @returns Today's string or date object
+ */
+exports.today = (formated = true) => {
+  // https://www.toptal.com/software/definitive-guide-to-datetime-manipulation
+  if (formated) // return date string MM/DD/YYYY
+    // return new Date().toLocaleDateString(undefined, {
+    //   day: '2-digit',
+    //   month: '2-digit',
+    //   year: 'numeric'
+    // })
+    return new Date().toISOString().slice(0,10);
+  return new Date(new Date().toDateString())
+}
+
+exports.isDate = function(date) {
+    return (new Date(date) !== "Invalid Date") && !isNaN(new Date(date));
+}
+
+/**
+ * GEt exact formated time
+ * @param formated If true date is formated to "SS:MM:HH MM.
+ * @returns Today's string or date object
+ */
+exports.time = () => {
+  return new Date().toLocaleTimeString(undefined, {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
+}
+
+
+
 
 /**
  * Filters the elements in an object and returns a new copy.

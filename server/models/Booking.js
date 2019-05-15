@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const bookingSchema = new Schema({
-  startDate: {
+  startAt: {
     type: Date,
     required: "Select a start date"
   },
-  endDate: {
+  endAt: {
     type: Date,
     required: "Select an end date"
   },

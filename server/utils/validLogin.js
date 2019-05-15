@@ -2,8 +2,9 @@ const Validator = require('validator');
 const util = require('./toolBox');
 
 module.exports = function (req, res, next) {
-  const data = req.body;
   let errors = {};
+  const data = !util.isEmpty(req.body) ? req.body : '';
+  if (!data) return res.status(422).json({ error: "Empty object" });
 
   //FALLBACK EMPTY FIELDS
   const email = !util.isEmpty(data.email) ? data.email : '';

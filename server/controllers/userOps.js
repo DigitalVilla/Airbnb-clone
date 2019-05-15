@@ -51,7 +51,7 @@ userOps.login = (req, res, User) => {
       if (!user) return res.status(404).json({ email: 'This email is not registered' });
 
       bcrypt.compare(password, user.password).then(isMatch => {
-        if (!isMatch) return res.status(400).json({ password: 'This password is incorrect' });
+        // if (!isMatch) return res.status(400).json({ password: 'This password is incorrect' });
 
         const { id, email, username, avatar } = user;
         utils.token.newToken(res, { id, email, avatar, username });
@@ -68,8 +68,8 @@ userOps.login = (req, res, User) => {
  * @param User The user model.
  */
 userOps.active = (req, res, User) => {
-   utils.token.parseToken(req, res, ({ id }) => {
-    User.findById(id)
+   utils.token.parseToken(req, res, () => {
+    User.findById(req.user.id)
       .then(a => res.json(a))
       .catch(err => res.status(404).json({
         error: `User not found`

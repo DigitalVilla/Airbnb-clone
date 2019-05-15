@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const user = require('../controllers/userOps');
-const db = require('../controllers/dbOps');
-const mod = require('../models/User');
+const user = require('../../controllers/userOps');
+const db = require('../../controllers/dbOps');
+const mod = require('../../models/User');
 
 /**
  * Return all users in database
